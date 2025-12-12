@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OERC - Ontario Educational Research Consortium</title>
+    <script>
+      // Single Page App routing for GitHub Pages
+      // Redirect to index.html with the path as a query parameter
+      const path = window.location.pathname;
+      const search = window.location.search;
+      const hash = window.location.hash;
+      window.location.replace('/Warca/' + '?p=' + encodeURIComponent(path + search + hash));
+    </script>
+  </head>
+  <body>
+    <div id="root">Loading...</div>
+  </body>
+</html>
