@@ -64,6 +64,11 @@ const DEMO_PAPERS: ResearchPaper[] = [
  * Falls back to demo data if Supabase isn't configured
  */
 export async function getPapers(): Promise<ResearchPaper[]> {
+  // If Supabase isn't configured, return demo data
+  if (!supabase) {
+    return DEMO_PAPERS;
+  }
+
   try {
     const { data, error } = await supabase
       .from('papers')
@@ -106,6 +111,11 @@ export async function uploadPaperToLibrary(
   imageFile: File | null,
   tags: string[]
 ): Promise<ResearchPaper | null> {
+  if (!supabase) {
+    console.warn('Supabase not configured. Cannot upload papers.');
+    return null;
+  }
+
   try {
     // Upload PDF
     const pdfPath = `papers/${Date.now()}_${pdfFile.name}`;
@@ -177,6 +187,11 @@ export async function uploadPaperToLibrary(
  * Delete a paper from the library
  */
 export async function deletePaper(id: string): Promise<boolean> {
+  if (!supabase) {
+    console.warn('Supabase not configured. Cannot delete papers.');
+    return false;
+  }
+
   try {
     const { error } = await supabase.from('papers').delete().eq('id', id);
     return !error;
@@ -190,6 +205,9 @@ export async function deletePaper(id: string): Promise<boolean> {
  * Sign in with email and password
  */
 export async function signIn(email: string, password: string) {
+  if (!supabase) {
+    return { data: null, error: { message: 'Supabase not configured' } };
+  }
   return await supabase.auth.signInWithPassword({ email, password });
 }
 
@@ -197,6 +215,9 @@ export async function signIn(email: string, password: string) {
  * Sign out the current user
  */
 export async function signOut() {
+  if (!supabase) {
+    return { error: null };
+  }
   return await supabase.auth.signOut();
 }
 
@@ -204,6 +225,9 @@ export async function signOut() {
  * Get the current authenticated user
  */
 export async function getCurrentUser() {
+  if (!supabase) {
+    return null;
+  }
   const { data: { user } } = await supabase.auth.getUser();
   return user;
 }
