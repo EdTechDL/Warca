@@ -43,6 +43,15 @@ jobs:
           VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
           VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
 
+      - name: Verify build output
+        run: |
+          echo "=== Contents of dist folder ==="
+          ls -la dist/
+          echo "=== Contents of dist/index.html ==="
+          cat dist/index.html
+          echo "=== Verifying base path in built files ==="
+          grep -r "Warca" dist/index.html || echo "WARNING: Base path not found!"
+
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
